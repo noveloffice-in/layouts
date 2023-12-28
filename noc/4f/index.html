@@ -279,8 +279,9 @@
       if (isDevMode) {
         ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
       } else {
-        ctx.fillStyle = '#b8fffe';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        // ctx.fillStyle = '#b8fffe';
+        // ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
       ctx.lineWidth = 0.5 / scale;

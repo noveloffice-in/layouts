@@ -154,7 +154,7 @@
     let apiData = null;
     const bgImage = new Image();
     bgImage.onload = drawGrid;
-    bgImage.src = '../../assets/images/NTP-GF-BG.png';
+    bgImage.src = '../../assets/images/NOQ-2F.png';
     let brushSize = 1; // Default brush size
 
 
@@ -479,55 +479,7 @@
       canvas.style.cursor = isGrabbing ? 'grabbing' : (controlPressed ? 'grab' : 'default');
     }
 
-    // function selectCellsOnHover(event) {
-    //   const mousex = (event.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
-    //   const mousey = (event.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
-    //   const activeGroup = getActiveSelectionGroup();
-    //   if (!activeGroup) return;
-
-    //   const halfBrush = Math.floor(brushSize / 2);
-    //   for (let i = -halfBrush; i <= halfBrush; i++) {
-    //     for (let j = -halfBrush; j <= halfBrush; j++) {
-    //       const cellX = Math.floor(mousex / (canvas.width / columns)) + i;
-    //       const cellY = Math.floor(mousey / (canvas.height / rows)) + j;
-    //       if (cellX >= 0 && cellX < columns && cellY >= 0 && cellY < rows) {
-    //         const cellId = generateCellId(cellY, cellX);
-    //         if (cellMap.has(cellId)) {
-    //           const cell = cellMap.get(cellId);
-    //           cell.selectedFor[activeGroup] = true; // Select the cell
-    //           applyColorToSelectedCell(cell, activeGroup);
-    //         }
-    //       }
-    //     }
-    //   }
-    //   updateSelectionDetails(activeGroup);
-    //   drawGrid();
-    // }
-
-    // function deselectCellsOnHover(event) {
-    //   const mousex = (event.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
-    //   const mousey = (event.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
-    //   const activeGroup = getActiveSelectionGroup();
-    //   if (!activeGroup) return;
-
-    //   const halfBrush = Math.floor(brushSize / 2);
-    //   for (let i = -halfBrush; i <= halfBrush; i++) {
-    //     for (let j = -halfBrush; j <= halfBrush; j++) {
-    //       const cellX = Math.floor(mousex / (canvas.width / columns)) + i;
-    //       const cellY = Math.floor(mousey / (canvas.height / rows)) + j;
-    //       if (cellX >= 0 && cellX < columns && cellY >= 0 && cellY < rows) {
-    //         const cellId = generateCellId(cellY, cellX);
-    //         if (cellMap.has(cellId)) {
-    //           const cell = cellMap.get(cellId);
-    //           cell.selectedFor[activeGroup] = false; // Deselect the cell
-    //           removeColorFromDeselectedCell(cell, activeGroup);
-    //         }
-    //       }
-    //     }
-    //   }
-    //   updateSelectionDetails(activeGroup);
-    //   drawGrid();
-    // }
+ 
 
     function selectOrDeselectCellsOnHover(event, isSelecting) {
       const mousex = (event.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;

@@ -154,7 +154,7 @@
     let apiData = null;
     const bgImage = new Image();
     bgImage.onload = drawGrid;
-    bgImage.src = '../../assets/images/NTP-GF-BG.png';
+    bgImage.src = '../../assets/images/NOC-2F.png';
     let brushSize = 1; // Default brush size
 
 
@@ -437,7 +437,7 @@
     }
 
     function fetchLayoutData() {
-      fetch('https://erpnoveloffice.in/api/method/get-layouts?location=NTP&floor=GF')
+      fetch('https://erpnoveloffice.in/api/method/get-layouts?location=NOC&floor=2F')
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');

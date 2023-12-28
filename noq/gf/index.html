@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layouts App</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <h1 class="mainHeading">Layouts App</h1>
+    <nav>
+      <div class="mode-switch">
+        <label class="switch">
+          <input type="checkbox" id="darkToggle">
+          <span class="slider round"><span>🌚</span><span>🌞</span></span>
+        </label>
+      </div>
+      <div class="mode-switch">
+        <span>Dev Mode</span>
+        <label class="switch">
+          <input type="checkbox" id="modeToggle" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <div id="pageContainer">
+    <div class="row1">
+      <!-- Canvas Container -->
+      <div class="canvasContainer">
+        <canvas id="myCanvas"></canvas>
+      </div>
+
+      <!-- Cell Information Section -->
+      <div class="cellInfo">
+        <!-- Development Mode Section -->
+        <div class="selectionInfo">
+
+          <h3>Selection Details:</h3>
+          <div class="dataContainer">
+            <!-- Wall Cells Selection -->
+            <div class="dataTools">
+              <span>
+                <input type="radio" id="selection1" name="selectionGroup" value="wallTextarea" checked>
+                <label for="selection1">Wall Cells</label>
+              </span>
+              <span>
+                <svg id="copyWall" width="17px" height="17px" viewBox="0 0 24 24" fill="none"
+                  xmlns="http://www.w3.org/2000/svg" stroke="#000000">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M6 11C6 8.17157 6 6.75736 6.87868 5.87868C7.75736 5 9.17157 5 12 5H15C17.8284 5 19.2426 5 20.1213 5.87868C21 6.75736 21 8.17157 21 11V16C21 18.8284 21 20.2426 20.1213 21.1213C19.2426 22 17.8284 22 15 22H12C9.17157 22 7.75736 22 6.87868 21.1213C6 20.2426 6 18.8284 6 16V11Z"
+                      stroke="#ffffff" stroke-width="1.5"></path>
+                    <path
+                      d="M6 19C4.34315 19 3 17.6569 3 16V10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H15C16.6569 2 18 3.34315 18 5"
+                      stroke="#ffffff" stroke-width="1.5"></path>
+                  </g>
+                </svg>
+                <svg id="clearWall" width="19px" height="19px" viewBox="0 0 24 24" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M5.50506 11.4096L6.03539 11.9399L5.50506 11.4096ZM3 14.9522H2.25H3ZM9.04776 21V21.75V21ZM11.4096 5.50506L10.8792 4.97473L11.4096 5.50506ZM13.241 17.8444C13.5339 18.1373 14.0088 18.1373 14.3017 17.8444C14.5946 17.5515 14.5946 17.0766 14.3017 16.7837L13.241 17.8444ZM7.21629 9.69832C6.9234 9.40543 6.44852 9.40543 6.15563 9.69832C5.86274 9.99122 5.86274 10.4661 6.15563 10.759L7.21629 9.69832ZM17.9646 12.0601L12.0601 17.9646L13.1208 19.0253L19.0253 13.1208L17.9646 12.0601ZM6.03539 11.9399L11.9399 6.03539L10.8792 4.97473L4.97473 10.8792L6.03539 11.9399ZM6.03539 17.9646C5.18538 17.1146 4.60235 16.5293 4.22253 16.0315C3.85592 15.551 3.75 15.2411 3.75 14.9522H2.25C2.25 15.701 2.56159 16.3274 3.03 16.9414C3.48521 17.538 4.1547 18.2052 4.97473 19.0253L6.03539 17.9646ZM4.97473 10.8792C4.1547 11.6993 3.48521 12.3665 3.03 12.9631C2.56159 13.577 2.25 14.2035 2.25 14.9522H3.75C3.75 14.6633 3.85592 14.3535 4.22253 13.873C4.60235 13.3752 5.18538 12.7899 6.03539 11.9399L4.97473 10.8792ZM12.0601 17.9646C11.2101 18.8146 10.6248 19.3977 10.127 19.7775C9.64651 20.1441 9.33665 20.25 9.04776 20.25V21.75C9.79649 21.75 10.423 21.4384 11.0369 20.97C11.6335 20.5148 12.3008 19.8453 13.1208 19.0253L12.0601 17.9646ZM4.97473 19.0253C5.79476 19.8453 6.46201 20.5148 7.05863 20.97C7.67256 21.4384 8.29902 21.75 9.04776 21.75V20.25C8.75886 20.25 8.449 20.1441 7.9685 19.7775C7.47069 19.3977 6.88541 18.8146 6.03539 17.9646L4.97473 19.0253ZM17.9646 6.03539C18.8146 6.88541 19.3977 7.47069 19.7775 7.9685C20.1441 8.449 20.25 8.75886 20.25 9.04776H21.75C21.75 8.29902 21.4384 7.67256 20.97 7.05863C20.5148 6.46201 19.8453 5.79476 19.0253 4.97473L17.9646 6.03539ZM19.0253 13.1208C19.8453 12.3008 20.5148 11.6335 20.97 11.0369C21.4384 10.423 21.75 9.79649 21.75 9.04776H20.25C20.25 9.33665 20.1441 9.64651 19.7775 10.127C19.3977 10.6248 18.8146 11.2101 17.9646 12.0601L19.0253 13.1208ZM19.0253 4.97473C18.2052 4.1547 17.538 3.48521 16.9414 3.03C16.3274 2.56159 15.701 2.25 14.9522 2.25V3.75C15.2411 3.75 15.551 3.85592 16.0315 4.22253C16.5293 4.60235 17.1146 5.18538 17.9646 6.03539L19.0253 4.97473ZM11.9399 6.03539C12.7899 5.18538 13.3752 4.60235 13.873 4.22253C14.3535 3.85592 14.6633 3.75 14.9522 3.75V2.25C14.2035 2.25 13.577 2.56159 12.9631 3.03C12.3665 3.48521 11.6993 4.1547 10.8792 4.97473L11.9399 6.03539ZM14.3017 16.7837L7.21629 9.69832L6.15563 10.759L13.241 17.8444L14.3017 16.7837Z"
+                      fill="#ffffff"></path>
+                    <path d="M9 21H21" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                  </g>
+                </svg>
+              </span>
+            </div>
+            <textarea class="selectionDetails" id="wallCells" readonly></textarea>
+
+            <!-- Inner Cells Selection -->
+            <div class="dataTools">
+              <span>
+                <input type="radio" id="selection2" name="selectionGroup" value="innerTextarea">
+                <label for="selection2">Inner Cells</label>
+              </span>
+              <span>
+                <svg id="copyInner" width="17px" height="17px" viewBox="0 0 24 24" fill="none"
+                  xmlns="http://www.w3.org/2000/svg" stroke="#000000">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M6 11C6 8.17157 6 6.75736 6.87868 5.87868C7.75736 5 9.17157 5 12 5H15C17.8284 5 19.2426 5 20.1213 5.87868C21 6.75736 21 8.17157 21 11V16C21 18.8284 21 20.2426 20.1213 21.1213C19.2426 22 17.8284 22 15 22H12C9.17157 22 7.75736 22 6.87868 21.1213C6 20.2426 6 18.8284 6 16V11Z"
+                      stroke="#ffffff" stroke-width="1.5"></path>
+                    <path
+                      d="M6 19C4.34315 19 3 17.6569 3 16V10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H15C16.6569 2 18 3.34315 18 5"
+                      stroke="#ffffff" stroke-width="1.5"></path>
+                  </g>
+                </svg>
+                <svg id="clearInner" width="19px" height="19px" viewBox="0 0 24 24" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M5.50506 11.4096L6.03539 11.9399L5.50506 11.4096ZM3 14.9522H2.25H3ZM9.04776 21V21.75V21ZM11.4096 5.50506L10.8792 4.97473L11.4096 5.50506ZM13.241 17.8444C13.5339 18.1373 14.0088 18.1373 14.3017 17.8444C14.5946 17.5515 14.5946 17.0766 14.3017 16.7837L13.241 17.8444ZM7.21629 9.69832C6.9234 9.40543 6.44852 9.40543 6.15563 9.69832C5.86274 9.99122 5.86274 10.4661 6.15563 10.759L7.21629 9.69832ZM17.9646 12.0601L12.0601 17.9646L13.1208 19.0253L19.0253 13.1208L17.9646 12.0601ZM6.03539 11.9399L11.9399 6.03539L10.8792 4.97473L4.97473 10.8792L6.03539 11.9399ZM6.03539 17.9646C5.18538 17.1146 4.60235 16.5293 4.22253 16.0315C3.85592 15.551 3.75 15.2411 3.75 14.9522H2.25C2.25 15.701 2.56159 16.3274 3.03 16.9414C3.48521 17.538 4.1547 18.2052 4.97473 19.0253L6.03539 17.9646ZM4.97473 10.8792C4.1547 11.6993 3.48521 12.3665 3.03 12.9631C2.56159 13.577 2.25 14.2035 2.25 14.9522H3.75C3.75 14.6633 3.85592 14.3535 4.22253 13.873C4.60235 13.3752 5.18538 12.7899 6.03539 11.9399L4.97473 10.8792ZM12.0601 17.9646C11.2101 18.8146 10.6248 19.3977 10.127 19.7775C9.64651 20.1441 9.33665 20.25 9.04776 20.25V21.75C9.79649 21.75 10.423 21.4384 11.0369 20.97C11.6335 20.5148 12.3008 19.8453 13.1208 19.0253L12.0601 17.9646ZM4.97473 19.0253C5.79476 19.8453 6.46201 20.5148 7.05863 20.97C7.67256 21.4384 8.29902 21.75 9.04776 21.75V20.25C8.75886 20.25 8.449 20.1441 7.9685 19.7775C7.47069 19.3977 6.88541 18.8146 6.03539 17.9646L4.97473 19.0253ZM17.9646 6.03539C18.8146 6.88541 19.3977 7.47069 19.7775 7.9685C20.1441 8.449 20.25 8.75886 20.25 9.04776H21.75C21.75 8.29902 21.4384 7.67256 20.97 7.05863C20.5148 6.46201 19.8453 5.79476 19.0253 4.97473L17.9646 6.03539ZM19.0253 13.1208C19.8453 12.3008 20.5148 11.6335 20.97 11.0369C21.4384 10.423 21.75 9.79649 21.75 9.04776H20.25C20.25 9.33665 20.1441 9.64651 19.7775 10.127C19.3977 10.6248 18.8146 11.2101 17.9646 12.0601L19.0253 13.1208ZM19.0253 4.97473C18.2052 4.1547 17.538 3.48521 16.9414 3.03C16.3274 2.56159 15.701 2.25 14.9522 2.25V3.75C15.2411 3.75 15.551 3.85592 16.0315 4.22253C16.5293 4.60235 17.1146 5.18538 17.9646 6.03539L19.0253 4.97473ZM11.9399 6.03539C12.7899 5.18538 13.3752 4.60235 13.873 4.22253C14.3535 3.85592 14.6633 3.75 14.9522 3.75V2.25C14.2035 2.25 13.577 2.56159 12.9631 3.03C12.3665 3.48521 11.6993 4.1547 10.8792 4.97473L11.9399 6.03539ZM14.3017 16.7837L7.21629 9.69832L6.15563 10.759L13.241 17.8444L14.3017 16.7837Z"
+                      fill="#ffffff"></path>
+                    <path d="M9 21H21" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                  </g>
+                </svg>
+              </span>
+            </div>
+            <textarea class="selectionDetails" id="innerCells" readonly></textarea>
+          </div>
+        </div>
+
+        <!-- Preview Mode Section -->
+        <div class="cabinInfo">
+          <h3>Cabin Details:</h3>
+          <textarea class="cabinDetails" id="cabinDetails" readonly></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Pane -->
+    <div id="settingsPane">
+      <label for="brushSize">Brush</label>
+      <input type="number" id="brushSize" name="brushSize" min="1" max="5" value="1">
+    </div>
+
+  </div>
+
+  <!-- JavaScript Section -->
+  <script>
+    // Constants and Variables
+    const canvas = document.getElementById('myCanvas');
+    const ctx = setupCanvas(canvas);
+    const rows = 400;
+    const columns = 400;
+    let scale = 1;
+    const minScale = 1;
+    let offsetX = 0, offsetY = 0;
+    let isDragging = false;
+    let startDragOffset = {};
+    let controlPressed = false;
+    let sKeyPressed = false;
+    let dKeyPressed = false;
+    let fKeyPressed = false;
+    let cellMap = new Map();
+    let isDevMode = true;
+    let apiData = null;
+    const bgImage = new Image();
+    bgImage.onload = drawGrid;
+    bgImage.src = '../../assets/images/NOQ-GF.png';
+    let brushSize = 1; // Default brush size
+
+
+    // Utility Functions
+    function initializeGrid() {
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < columns; j++) {
+          let cellId = String(i * columns + j + 1).padStart(5, '0');
+          cellMap.set(cellId, {
+            x: j * (canvas.width / columns),
+            y: i * (canvas.height / rows),
+            width: canvas.width / columns,
+            height: canvas.height / rows,
+            selectedFor: {
+              Wall: false,
+              Inner: false
+            }
+          });
+        }
+      }
+    }
+
+    function getActiveSelectionGroup() {
+      let radioButtons = document.querySelectorAll('input[name="selectionGroup"]');
+      for (let radioButton of radioButtons) {
+        if (radioButton.checked) {
+          return radioButton.value === 'wallTextarea' ? 'Wall' : 'Inner';
+        }
+      }
+      return null; // Default to null if no selection
+    }
+
+    function updateCellMapWithApiData(apiData) {
+      // Reset cell colors and text
+      cellMap.forEach(cell => {
+        cell.black = false;
+        cell.grey = false;
+        cell.white = false;
+        cell.green = false;
+        cell.red = false;
+        cell.orange = false;
+        delete cell.areaName; // Remove any existing areaName
+      });
+
+      // Check if apiData has 'message' property and it is an array
+      if (apiData.message && Array.isArray(apiData.message)) {
+        apiData.message.forEach(block => {
+          block.cell_groups.forEach(group => {
+            let colorKey = group.color.toLowerCase(); // Assuming color names in the data match the keys used in the application
+            let cellIds = group.area_cells.match(/\d+/g); // Modified to match only numbers
+
+            cellIds.forEach(cellId => {
+              if (cellMap.has(cellId)) {
+                let cell = cellMap.get(cellId);
+                cell[colorKey] = true;
+                // If the group is the "Inner Area", store the name
+                if (group.area_name === "Inner Area") {
+                  cell.areaName = block.name;
+                }
+              }
+            });
+          });
+        });
+      } else {
+        console.error('Invalid apiData structure:', apiData);
+      }
+
+      drawGrid();
+    }
+
+    function setupCanvas(canvas) {
+      let dpr = window.devicePixelRatio || 1;
+
+      // Get the size of the canvas as displayed on the screen
+      let rect = canvas.getBoundingClientRect();
+
+      // Set the drawing buffer size to match the displayed size, factoring in the device pixel ratio.
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+
+      let ctx = canvas.getContext('2d');
+
+      // Scale all drawing operations by the dpr, so everything is drawn at the correct size.
+      ctx.scale(dpr, dpr);
+
+      return ctx;
+    }
+
+    function generateCellId(row, column) {
+      let idNumber = row * columns + column + 1;
+      return String(idNumber).padStart(5, '0');
+    }
+
+    function debounce(func, timeout = 300) {
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+      };
+    }
+
+    function updateCellColors(textareaId, colorProperty) {
+      const cellIds = document.getElementById(textareaId).value
+        .split(',')
+        .map(id => id.trim()) // Trim whitespace
+        .map(id => id.replace(/"/g, '')); // Remove quotes
+
+      cellMap.forEach((cell, cellId) => {
+        cell[colorProperty] = cellIds.includes(cellId);
+      });
+
+      drawGrid();
+    }
+
+    function drawGrid() {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.translate(offsetX, offsetY);
+      ctx.save();
+      ctx.scale(scale, scale);
+
+      if (isDevMode) {
+        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.fillStyle = '#b8fffe';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      ctx.lineWidth = 0.5 / scale;
+
+      const cellOverlap = 0.1; // Extra pixels to add to the fill to cover grid lines
+
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < columns; j++) {
+          let cellId = generateCellId(i, j);
+          let cell = cellMap.get(cellId) || {
+            x: j * (canvas.width / columns),
+            y: i * (canvas.height / rows),
+            width: canvas.width / columns,
+            height: canvas.height / rows,
+            selected: false,
+            black: false,
+            grey: false,
+            white: false,
+            green: false,
+            red: false,
+            orange: false
+          };
+          cellMap.set(cellId, cell);
+
+          const colors = {
+            black: '#000000',
+            grey: '#808080',
+            white: '#FFFFFF',
+            green: '#008000',
+            red: '#FF0000',
+            orange: '#FFA500'
+          };
+
+          let filled = false;
+          Object.keys(colors).forEach(colorProperty => {
+            if (cell[colorProperty]) {
+              ctx.fillStyle = colors[colorProperty];
+              // Overdraw the fill slightly to avoid grid lines showing through
+              ctx.fillRect(cell.x - cellOverlap / 2, cell.y - cellOverlap / 2, cell.width + cellOverlap, cell.height + cellOverlap);
+              filled = true;
+            }
+          });
+
+          if (!filled && cell.selected) {
+            ctx.fillStyle = 'rgba(0, 100, 255, 0.3)';
+            ctx.fillRect(cell.x, cell.y, cell.width, cell.height);
+          }
+
+          // Only draw grid lines for non-filled cells in Dev mode
+          if (isDevMode && !filled) {
+            ctx.strokeStyle = '#ddd';
+            ctx.strokeRect(cell.x, cell.y, cell.width, cell.height);
+          }
+        }
+      }
+
+      // Draw text for "Inner Area" in Preview Mode
+      if (!isDevMode && apiData && apiData.message) {
+        apiData.message.forEach(block => {
+          if (block.cell_groups) {
+            block.cell_groups.forEach(group => {
+              if (group.area_name === "Inner Area") {
+                // Calculate the center position of the "Inner Area"
+                let center = calculateCenter(group.area_cells);
+                ctx.font = '3px Arial'; // Set font size
+                ctx.fillStyle = 'black'; // Set font color
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(block.name, center.x, center.y); // Draw the text
+              }
+            });
+          }
+        });
+      }
+
+      ctx.restore();
+    }
+
+    // Helper function to calculate the center position of a group of cells
+    function calculateCenter(area_cells) {
+      let minX = Infinity, maxX = 0, minY = Infinity, maxY = 0;
+      area_cells.match(/\d+/g).forEach(cellId => { // Modified regex
+        if (cellMap.has(cellId)) {
+          const cell = cellMap.get(cellId);
+          minX = Math.min(minX, cell.x);
+          maxX = Math.max(maxX, cell.x + cell.width);
+          minY = Math.min(minY, cell.y);
+          maxY = Math.max(maxY, cell.y + cell.height);
+        }
+      });
+
+      return { x: (minX + maxX) / 2, y: (minY + maxY) / 2 };
+    }
+
+
+    function selectCells(event) {
+      const mousex = (event.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
+      const mousey = (event.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
+
+      const halfBrush = Math.floor(brushSize / 2);
+      for (let i = -halfBrush; i <= halfBrush; i++) {
+        for (let j = -halfBrush; j <= halfBrush; j++) {
+          // Calculate the cell coordinates based on brush size
+          const cellX = Math.floor(mousex / (canvas.width / columns)) + i;
+          const cellY = Math.floor(mousey / (canvas.height / rows)) + j;
+
+          // Check if the calculated cell is within the grid boundaries
+          if (cellX >= 0 && cellX < columns && cellY >= 0 && cellY < rows) {
+            // Generate the cellId for the calculated cell
+            const cellId = generateCellId(cellY, cellX);
+
+            // Select the cell if it's in the map
+            if (cellMap.has(cellId)) {
+              const cell = cellMap.get(cellId);
+              cell.selected = true;
+            }
+          }
+        }
+      }
+
+      updateSelectionDetails();
+      drawGrid();
+    }
+
+
+    function deselectCells(mouseX, mouseY) {
+      const mousex = (mouseX - canvas.getBoundingClientRect().left - offsetX) / scale;
+      const mousey = (mouseY - canvas.getBoundingClientRect().top - offsetY) / scale;
+
+      for (const [cellId, cell] of cellMap.entries()) {
+        if (mousex >= cell.x && mousex < cell.x + cell.width && mousey >= cell.y && mousey < cell.y + cell.height) {
+          cell.selected = false;
+        }
+      }
+
+      updateSelectionDetails();
+      drawGrid();
+    }
+
+    function updateSelectionDetails(activeGroup) {
+      const selectedCellIds = Array.from(cellMap.entries())
+        .filter(([_, cell]) => cell.selectedFor[activeGroup])
+        .map(([cellId, _]) => `"${cellId}"`);
+
+      if (activeGroup === 'Wall') {
+        document.getElementById('wallCells').value = selectedCellIds.join(', ');
+      } else if (activeGroup === 'Inner') {
+        document.getElementById('innerCells').value = selectedCellIds.join(', ');
+      }
+    }
+
+    function updateSelectedCellsFromTextarea(inputText, group) {
+      // Function logic
+    }
+
+    function fetchLayoutData() {
+      fetch('https://erpnoveloffice.in/api/method/get-layouts?location=NOQ&floor=GF')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          apiData = data; // Store the API data
+          updateCellMapWithApiData(data);
+          drawGrid();
+        })
+        .catch(error => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+
+    function toggleDarkMode(setFromStorage = false) {
+      const darkModeToggle = document.getElementById('darkToggle');
+
+      if (setFromStorage) {
+        // Apply preference on load
+        const darkModePreference = localStorage.getItem('darkMode') === 'true';
+        darkModeToggle.checked = darkModePreference;
+      } else {
+        // Save preference and apply change
+        const isChecked = darkModeToggle.checked;
+        localStorage.setItem('darkMode', isChecked.toString());
+      }
+
+      if (darkModeToggle.checked) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    }
+
+    function setGrabbingCursor(isGrabbing) {
+      canvas.style.cursor = isGrabbing ? 'grabbing' : (controlPressed ? 'grab' : 'default');
+    }
+
+    // function selectCellsOnHover(event) {
+    //   const mousex = (event.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
+    //   const mousey = (event.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
+    //   const activeGroup = getActiveSelectionGroup();
+    //   if (!activeGroup) return;
+
+    //   const halfBrush = Math.floor(brushSize / 2);
+    //   for (let i = -halfBrush; i <= halfBrush; i++) {
+    //     for (let j = -halfBrush; j <= halfBrush; j++) {
+    //       const cellX = Math.floor(mousex / (canvas.width / columns)) + i;
+    //       const cellY = Math.floor(mousey / (canvas.height / rows)) + j;
+    //       if (cellX >= 0 && cellX < columns && cellY >= 0 && cellY < rows) {
+    //         const cellId = generateCellId(cellY, cellX);
+    //         if (cellMap.has(cellId)) {
+    //           const cell = cellMap.get(cellId);
+    //           cell.selectedFor[activeGroup] = true; // Select the cell
+    //           applyColorToSelectedCell(cell, activeGroup);
+    //         }
+    //       }
+    //     }
+    //   }
+    //   updateSelectionDetails(activeGroup);
+    //   drawGrid();
+    // }
+
+    // function deselectCellsOnHover(event) {
+    //   const mousex = (event.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
+    //   const mousey = (event.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
+    //   const activeGroup = getActiveSelectionGroup();
+    //   if (!activeGroup) return;
+
+    //   const halfBrush = Math.floor(brushSize / 2);
+    //   for (let i = -halfBrush; i <= halfBrush; i++) {
+    //     for (let j = -halfBrush; j <= halfBrush; j++) {
+    //       const cellX = Math.floor(mousex / (canvas.width / columns)) + i;
+    //       const cellY = Math.floor(mousey / (canvas.height / rows)) + j;
+    //       if (cellX >= 0 && cellX < columns && cellY >= 0 && cellY < rows) {
+    //         const cellId = generateCellId(cellY, cellX);
+    //         if (cellMap.has(cellId)) {
+    //           const cell = cellMap.get(cellId);
+    //           cell.selectedFor[activeGroup] = false; // Deselect the cell
+    //           removeColorFromDeselectedCell(cell, activeGroup);
+    //         }
+    //       }
+    //     }
+    //   }
+    //   updateSelectionDetails(activeGroup);
+    //   drawGrid();
+    // }
+
+    function selectOrDeselectCellsOnHover(event, isSelecting) {
+      const mousex = (event.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
+      const mousey = (event.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
+      const activeGroup = getActiveSelectionGroup();
+      if (!activeGroup) return; // Exit if no group is selected
+
+      const cellWidth = canvas.width / columns; // Width of a single cell
+      const cellHeight = canvas.height / rows; // Height of a single cell
+
+      // Calculate the number of cells the cursor should cover based on its visual size
+      const cellsCovered = brushSize / Math.min(cellWidth, cellHeight);
+
+      // Calculate the bounds of the cursor in terms of cells
+      const cursorCellLeft = Math.floor(mousex / cellWidth) - Math.floor(cellsCovered / 2);
+      const cursorCellRight = cursorCellLeft + cellsCovered;
+      const cursorCellTop = Math.floor(mousey / cellHeight) - Math.floor(cellsCovered / 2);
+      const cursorCellBottom = cursorCellTop + cellsCovered;
+
+      for (let x = cursorCellLeft; x <= cursorCellRight; x++) {
+        for (let y = cursorCellTop; y <= cursorCellBottom; y++) {
+          const cellId = generateCellId(y, x);
+          if (cellMap.has(cellId)) {
+            const cell = cellMap.get(cellId);
+            // Check if the cell's center is within the bounds of the cursor
+            if (x >= 0 && x < columns && y >= 0 && y < rows) {
+              const otherGroup = activeGroup === 'Wall' ? 'Inner' : 'Wall';
+              if (cell.selectedFor[otherGroup]) continue;
+
+              if (isSelecting && !cell.selectedFor[activeGroup]) {
+                cell.selectedFor[activeGroup] = true; // Select the cell
+                applyColorToSelectedCell(cell, activeGroup); // Apply color to the selected cell
+              } else if (!isSelecting && cell.selectedFor[activeGroup]) {
+                cell.selectedFor[activeGroup] = false; // Deselect the cell
+                removeColorFromDeselectedCell(cell, activeGroup); // Remove color from the deselected cell
+              }
+            }
+          }
+        }
+      }
+
+      updateSelectionDetails(activeGroup); // Update the textarea
+      drawGrid(); // Redraw the grid
+    }
+
+    function applyColorToSelectedCell(cell, activeGroup) {
+      // Define color mapping for each group
+      const colorMap = {
+        'Wall': 'black', // or any other color you want for Wall cells
+        'Inner': 'grey'  // or any other color you want for Inner cells
+      };
+
+      const color = colorMap[activeGroup];
+      if (color) {
+        cell[color] = true;
+      }
+    }
+
+    function removeColorFromDeselectedCell(cell, activeGroup) {
+      // Define color mapping for each group
+      const colorMap = {
+        'Wall': 'black', // or any other color you want for Wall cells
+        'Inner': 'grey'  // or any other color you want for Inner cells
+      };
+
+      const color = colorMap[activeGroup];
+      if (color) {
+        cell[color] = false;
+      }
+    }
+
+    function createBrushCursor(brushSize, filled = true) {
+      const cursorCanvas = document.createElement('canvas');
+      const ctx = cursorCanvas.getContext('2d');
+      cursorCanvas.width = cursorCanvas.height = brushSize * 2; // Set the cursor's size
+
+      // Draw a square cursor
+      ctx.beginPath();
+      if (filled) {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, brushSize * 2, brushSize * 2);
+      } else {
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1; // You can adjust the line width if necessary
+        ctx.strokeRect(0, 0, brushSize * 2, brushSize * 2);
+      }
+
+      return cursorCanvas.toDataURL('image/png');
+    }
+
+
+
+    // Event Listeners
+    document.addEventListener("DOMContentLoaded", function () {
+      initializeGrid();
+      if (!isDevMode) fetchLayoutData();
+      else drawGrid();
+    });
+
+    document.getElementById('darkToggle').addEventListener('change', function () {
+      toggleDarkMode();
+    });
+
+    toggleDarkMode(true);
+
+    document.getElementById('modeToggle').addEventListener('change', function (event) {
+      isDevMode = event.target.checked;
+
+      const selectionInfoElements = document.querySelectorAll('.selectionInfo');
+      const cabinInfoElements = document.querySelectorAll('.cabinInfo');
+      const row1Element = document.querySelectorAll('.row1');
+      const settingsPane = document.getElementById('settingsPane');
+
+      // Toggle display for .selectionInfo based on isDevMode
+      selectionInfoElements.forEach(el => {
+        el.style.display = isDevMode ? 'block' : 'none';
+      });
+
+      // Toggle display for .cabinInfo based on isDevMode
+      cabinInfoElements.forEach(el => {
+        el.style.display = isDevMode ? 'none' : 'block';
+      });
+
+      row1Element.forEach(el => {
+        el.style.width = isDevMode ? '95%' : '100%';
+      });
+
+      settingsPane.style.right = isDevMode ? '5px' : '-70px';
+
+      if (isDevMode) {
+        // Clear selections in Dev Mode
+        cellMap.forEach(cell => {
+          cell.selected = false;
+          Object.keys(cell).forEach(key => {
+            if (['black', 'grey', 'white', 'green', 'red', 'orange'].includes(key)) {
+              cell[key] = false;
+            }
+          });
+        });
+        drawGrid();
+      } else {
+        // Reload API data in Preview Mode
+        fetchLayoutData();
+      }
+    });
+
+    document.getElementById('brushSize').addEventListener('input', function () {
+      brushSize = parseInt(this.value, 10) || 1; // Ensure it's a number and default to 1 if not
+      if (sKeyPressed) {
+        const brushCursor = createBrushCursor(brushSize);
+        canvas.style.cursor = `url('${brushCursor}') ${brushSize} ${brushSize}, auto`;
+      }
+    });
+
+
+
+    canvas.addEventListener('wheel', function (event) {
+      const zoomIntensity = 0.1;
+      const mousex = event.clientX - canvas.getBoundingClientRect().left;
+      const mousey = event.clientY - canvas.getBoundingClientRect().top;
+      const wheel = event.deltaY < 0 ? 1 : -1;
+      const zoom = Math.exp(wheel * zoomIntensity);
+
+      const newScale = scale * zoom;
+      if (newScale >= minScale) {
+        offsetX = mousex - (mousex - offsetX) * zoom;
+        offsetY = mousey - (mousey - offsetY) * zoom;
+        scale = newScale;
+        drawGrid();
+      }
+      event.preventDefault();
+    });
+
+    canvas.addEventListener('mousedown', function (event) {
+      if (event.ctrlKey) {
+        isDragging = true;
+        startDragOffset.x = event.clientX - offsetX;
+        startDragOffset.y = event.clientY - offsetY;
+        setGrabbingCursor(true);
+      }
+    });
+
+    canvas.addEventListener('mousemove', function (event) {
+      if (isDragging && controlPressed) {
+        offsetX = event.clientX - startDragOffset.x;
+        offsetY = event.clientY - startDragOffset.y;
+        drawGrid();
+      }
+      setGrabbingCursor(isDragging && controlPressed);
+
+      // Select cells on hover when 's' key is pressed
+      if (sKeyPressed && !controlPressed) {
+        selectOrDeselectCellsOnHover(event, true); // true for selection
+      }
+
+      // Deselect cells on hover when 'd' key is pressed
+      if (dKeyPressed && !controlPressed) {
+        selectOrDeselectCellsOnHover(event, false); // false for deselection
+      }
+    });
+
+    canvas.addEventListener('mouseup', function (event) {
+      isDragging = false;
+      setGrabbingCursor(false);
+    });
+
+    window.addEventListener('keydown', function (event) {
+      if (event.key === 'Control') {
+        controlPressed = true;
+        setGrabbingCursor(isDragging);
+      }
+      if (!isDevMode) return;
+      if (event.key === 's' || event.key === 'S') {
+        sKeyPressed = true;
+
+        const brushCursor = createBrushCursor(brushSize, true); // filled cursor
+        canvas.style.cursor = `url('${brushCursor}') ${brushSize} ${brushSize}, auto`;
+      }
+      if (event.key === 'd' || event.key === 'D') {
+        dKeyPressed = true;
+
+        const brushCursor = createBrushCursor(brushSize, false); // outlined cursor
+        canvas.style.cursor = `url('${brushCursor}') ${brushSize} ${brushSize}, auto`;
+      }
+    });
+
+
+    window.addEventListener('keyup', function (event) {
+      if (event.key === 'Control') {
+        controlPressed = false;
+        setGrabbingCursor(false);
+      }
+      if (event.key === 's' || event.key === 'S') {
+        sKeyPressed = false;
+        canvas.style.cursor = 'default';
+      }
+      if (event.key === 'd' || event.key === 'D') {
+        dKeyPressed = false;
+        canvas.style.cursor = 'default';
+      }
+    });
+
+    canvas.addEventListener('click', function (event) {
+      if (isDevMode) {
+        // Dev Mode - Select or Deselect Cells
+        if (sKeyPressed) { // Only proceed if 'S' key is pressed
+          const activeGroup = getActiveSelectionGroup();
+          if (!activeGroup) return; // Do nothing if no group is selected
+
+          const mousex = (event.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
+          const mousey = (event.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
+
+          for (const [cellId, cell] of cellMap.entries()) {
+            if (mousex >= cell.x && mousex < cell.x + cell.width && mousey >= cell.y && mousey < cell.y + cell.height) {
+              cell.selectedFor[activeGroup] = !cell.selectedFor[activeGroup]; // Toggle selection
+              applyColorToSelectedCell(cell, activeGroup); // Apply color to the selected cell
+              updateSelectionDetails(activeGroup); // Update the textarea
+              drawGrid();
+            }
+          }
+        }
+      } else if (!isDevMode && fKeyPressed) {
+        // Preview Mode - Show Cabin Details
+        const rect = canvas.getBoundingClientRect();
+        const mousex = (event.clientX - rect.left - offsetX) / scale;
+        const mousey = (event.clientY - rect.top - offsetY) / scale;
+
+        const columnClicked = Math.floor(mousex / (canvas.width / columns));
+        const rowClicked = Math.floor(mousey / (canvas.height / rows));
+        const cellId = generateCellId(rowClicked, columnClicked);
+
+        let foundAreaData = null;
+
+        // Iterate through the nested structure of apiData
+        if (apiData && apiData.message) {
+          apiData.message.forEach(data => {
+            if (data.cell_groups) {
+              data.cell_groups.forEach(group => {
+                let cellIds = group.area_cells.match(/\d+/g); // Match only the numeric part
+
+                if (cellIds && cellIds.includes(cellId)) {
+                  foundAreaData = {
+                    "Area Name": group.area_name,
+                    "Area Type": data.block_type,
+                    "Building Name": data.building_name,
+                    "Floor Name": data.floor_name,
+                    "Status": group.color
+                  };
+                }
+              });
+            }
+          });
+        }
+
+        const cabinDetailsTextarea = document.getElementById('cabinDetails');
+
+        if (foundAreaData) {
+          cabinDetailsTextarea.value = `Area Name: ${foundAreaData["Area Name"]}\nArea Type: ${foundAreaData["Area Type"]}\nBuilding Name: ${foundAreaData["Building Name"]}\nFloor Name: ${foundAreaData["Floor Name"]}\nStatus: ${foundAreaData["Status"]}`;
+        } else {
+          cabinDetailsTextarea.value = `No data found for Cell ID: ${cellId}`;
+        }
+      }
+    });
+
+    document.getElementById('wallCells').addEventListener('input', function () {
+      updateSelectedCellsFromTextarea(this.value, 'Wall');
+    });
+
+    document.getElementById('innerCells').addEventListener('input', function () {
+      updateSelectedCellsFromTextarea(this.value, 'Inner');
+    });
+
+    canvas.onselectstart = function () { return false; }
+    canvas.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+    });
+
+    window.addEventListener('keydown', function (event) {
+      if (event.key === 'f' || event.key === 'F') {
+        fKeyPressed = true;
+      }
+    });
+
+    window.addEventListener('keyup', function (event) {
+      if (event.key === 'f' || event.key === 'F') {
+        fKeyPressed = false;
+      }
+    });
+
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      element.select();
+      document.execCommand('copy');
+    }
+
+    document.getElementById('copyWall').addEventListener('click', function () {
+      copyToClipboard('wallCells');
+    });
+    document.getElementById('copyInner').addEventListener('click', function () {
+      copyToClipboard('innerCells');
+    });
+
+    // Initial Drawing of Grid
+    drawGrid();
+  </script>
+
+</body>
+
+</html>

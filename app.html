@@ -5,14 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Layouts App</title>
-  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
 
   <!-- Header Section -->
   <header>
-    <h1 class="mainHeading">Layouts App</h1>
+    <h1 class="appLogo">Layouts App</h1>
+
+    <!-- Property  Details -->
+    <h3 class="propertyDetails"></h3>
+
     <nav>
       <div class="mode-switch">
         <label class="switch">
@@ -23,7 +27,7 @@
       <div class="mode-switch">
         <span>Dev Mode</span>
         <label class="switch">
-          <input type="checkbox" id="modeToggle" checked>
+          <input type="checkbox" id="modeToggle">
           <span class="slider round"></span>
         </label>
       </div>
@@ -120,7 +124,7 @@
         <!-- Preview Mode Section -->
         <div class="cabinInfo">
           <h3>Cabin Details:</h3>
-          <textarea class="cabinDetails" id="cabinDetails" readonly></textarea>
+          <div class="cabinDetails" id="cabinDetails"></div>
         </div>
       </div>
     </div>
@@ -145,6 +149,15 @@
     const selectedLocation = locationParam || 'NTP';
     const selectedFloor = floorParam || 'GF';
 
+    // Find the property details element
+    const propertyDetailsElement = document.querySelector('.propertyDetails');
+
+    // Update its text content
+    if (propertyDetailsElement) {
+      propertyDetailsElement.textContent = `${selectedLocation} - ${selectedFloor}`;
+    }
+
+
 
     // Constants and Variables
     const canvas = document.getElementById('myCanvas');
@@ -161,12 +174,12 @@
     let dKeyPressed = false;
     let fKeyPressed = false;
     let cellMap = new Map();
-    let isDevMode = true;
+    let isDevMode = false;
     let apiData = null;
     const bgImage = new Image();
     bgImage.onload = drawGrid;
     const cacheBuster = new Date().getTime();
-    bgImage.src = `../../assets/images/${selectedLocation}-${selectedFloor}.png?cb=${cacheBuster}`;
+    bgImage.src = `./assets/images/${selectedLocation}-${selectedFloor}.png?cb=${cacheBuster}`;
 
     let brushSize = 1; // Default brush size
 
@@ -359,7 +372,7 @@
               if (group.area_name === "Inner Area") {
                 // Calculate the center position of the "Inner Area"
                 let center = calculateCenter(group.area_cells);
-                ctx.font = '3px Arial'; // Set font size
+                ctx.font = '1px Arial'; // Set font size
                 ctx.fillStyle = 'black'; // Set font color
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -460,6 +473,7 @@
         })
         .then(data => {
           apiData = data; // Store the API data
+          console.log(apiData);
           updateCellMapWithApiData(data);
           drawGrid();
         })
@@ -779,7 +793,8 @@
                     "Area Type": data.block_type,
                     "Building Name": data.building_name,
                     "Floor Name": data.floor_name,
-                    "Status": group.color
+                    "Status": group.color,
+                    "Cell ID": cellId
                   };
                 }
               });
@@ -790,9 +805,14 @@
         const cabinDetailsTextarea = document.getElementById('cabinDetails');
 
         if (foundAreaData) {
-          cabinDetailsTextarea.value = `Area Name: ${foundAreaData["Area Name"]}\nArea Type: ${foundAreaData["Area Type"]}\nBuilding Name: ${foundAreaData["Building Name"]}\nFloor Name: ${foundAreaData["Floor Name"]}\nStatus: ${foundAreaData["Status"]}`;
-        } else {
-          cabinDetailsTextarea.value = `No data found for Cell ID: ${cellId}`;
+          cabinDetailsTextarea.innerHTML = `<strong>Area Name:</strong> ${foundAreaData["Area Name"]}<br>
+                                 <strong>Area Type:</strong> ${foundAreaData["Area Type"]}<br>
+                                 <strong>Building Name:</strong> ${foundAreaData["Building Name"]}<br>
+                                 <strong>Floor Name:</strong> ${foundAreaData["Floor Name"]}<br>
+                                 <strong>Status:</strong> ${foundAreaData["Status"]}<br>
+                                 <strong>Cell ID:</strong> ${foundAreaData["Cell ID"]}`;
+        }else {
+          cabinDetailsTextarea.innerHTML = `No data found for Cell ID: ${cellId}`;
         }
       }
     });

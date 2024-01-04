@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Open+Sans&display=swap');
 
 :root {
     --primary-bg-color: aliceblue;
@@ -73,6 +73,15 @@ header {
     box-shadow: 0px -8px 20px #737373;
     background-color: var(--primary-bg-color);
     z-index: 9;
+}
+
+/* .appLogo{
+    font-family: 'Archivo Black', sans-serif;
+} */
+
+.propertyDetails{
+    font-weight: 900;
+    font-family: 'Archivo Black', sans-serif;
 }
 
 nav {
@@ -155,7 +164,7 @@ input:checked+.slider:before {
 }
 
 .row1 {
-    width: 95%;
+    width: 100%;
     height: 760px;
     display: flex;
     justify-content: stretch;
@@ -178,13 +187,13 @@ input:checked+.slider:before {
 }
 
 .selectionInfo {
-    /* display: none; */
+    display: none;
     height: 100%;
 }
 
 .cabinInfo {
     height: 100%;
-    display: none;
+    /* display: none; */
 }
 
 .selectionInfo .dataContainer {
@@ -224,6 +233,16 @@ textarea {
     width: 100%;
     min-height: 95%;
     max-height: 95%;
+    padding: 15px;
+    font-size: 15px;
+}
+
+.cabinInfo .cabinDetails{
+    width: 100%;
+    min-height: 95%;
+    max-height: 95%;
+    padding: 15px;
+    font-size: 15px;
 }
 
 #myCanvas {
@@ -238,6 +257,11 @@ textarea {
 @media only screen and (max-width: 900px) {
     .row1 {
         flex-direction: column;
+        height: auto;
+    }
+
+    .cabinInfo textarea{
+        height: 250px;
     }
 }
 
@@ -247,7 +271,7 @@ textarea {
     width: 60px;
     height: auto;
     position: fixed;
-    right: 5px;
+    right: -70px;
     top: 30%;
     background-color: var(--settings-pane-bg);
     border: 1px dashed var(--border-color);

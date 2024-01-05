@@ -222,23 +222,39 @@
         cell.green = false;
         cell.red = false;
         cell.orange = false;
-        delete cell.areaName; // Remove any existing areaName
+        delete cell.areaName;
       });
 
-      // Check if apiData has 'message' property and it is an array
+      // Check the structure of apiData.message
       if (apiData.message && Array.isArray(apiData.message)) {
+        // Handle the old API structure
         apiData.message.forEach(block => {
           block.cell_groups.forEach(group => {
-            let colorKey = group.color.toLowerCase(); // Assuming color names in the data match the keys used in the application
-            let cellIds = group.area_cells.match(/\d+/g); // Modified to match only numbers
-
+            let colorKey = group.color.toLowerCase();
+            let cellIds = group.area_cells.match(/\d+/g);
             cellIds.forEach(cellId => {
               if (cellMap.has(cellId)) {
                 let cell = cellMap.get(cellId);
                 cell[colorKey] = true;
-                // If the group is the "Inner Area", store the name
                 if (group.area_name === "Inner Area") {
                   cell.areaName = block.name;
+                }
+              }
+            });
+          });
+        });
+      } else if (apiData.message && typeof apiData.message === 'object') {
+        // Handle the new API structure
+        Object.keys(apiData.message).forEach(color => {
+          apiData.message[color].forEach(group => {
+            let cellIds = group.area_cells.match(/\d+/g);
+            let colorKey = (group.area_name === "Border") ? 'black' : color;
+            cellIds.forEach(cellId => {
+              if (cellMap.has(cellId)) {
+                let cell = cellMap.get(cellId);
+                cell[colorKey] = true;
+                if (group.area_name === "Inner Area") {
+                  cell.areaName = group.parent;
                 }
               }
             });
@@ -306,31 +322,17 @@
         ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
       } else {
         ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-        // ctx.fillStyle = '#b8fffe';
-        // ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
       ctx.lineWidth = 0.5 / scale;
+      const cellOverlap = 0.2; // Extra pixels to add to the fill to cover grid lines
 
-      const cellOverlap = 0.1; // Extra pixels to add to the fill to cover grid lines
-
+      // Drawing cells based on cellMap
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < columns; j++) {
           let cellId = generateCellId(i, j);
-          let cell = cellMap.get(cellId) || {
-            x: j * (canvas.width / columns),
-            y: i * (canvas.height / rows),
-            width: canvas.width / columns,
-            height: canvas.height / rows,
-            selected: false,
-            black: false,
-            grey: false,
-            white: false,
-            green: false,
-            red: false,
-            orange: false
-          };
-          cellMap.set(cellId, cell);
+          let cell = cellMap.get(cellId);
+          if (!cell) continue;
 
           const colors = {
             black: '#000000',
@@ -345,7 +347,6 @@
           Object.keys(colors).forEach(colorProperty => {
             if (cell[colorProperty]) {
               ctx.fillStyle = colors[colorProperty];
-              // Overdraw the fill slightly to avoid grid lines showing through
               ctx.fillRect(cell.x - cellOverlap / 2, cell.y - cellOverlap / 2, cell.width + cellOverlap, cell.height + cellOverlap);
               filled = true;
             }
@@ -356,7 +357,6 @@
             ctx.fillRect(cell.x, cell.y, cell.width, cell.height);
           }
 
-          // Only draw grid lines for non-filled cells in Dev mode
           if (isDevMode && !filled) {
             ctx.strokeStyle = '#ddd';
             ctx.strokeRect(cell.x, cell.y, cell.width, cell.height);
@@ -366,20 +366,17 @@
 
       // Draw text for "Inner Area" in Preview Mode
       if (!isDevMode && apiData && apiData.message) {
-        apiData.message.forEach(block => {
-          if (block.cell_groups) {
-            block.cell_groups.forEach(group => {
-              if (group.area_name === "Inner Area") {
-                // Calculate the center position of the "Inner Area"
-                let center = calculateCenter(group.area_cells);
-                ctx.font = '1px Arial'; // Set font size
-                ctx.fillStyle = 'black'; // Set font color
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(block.name, center.x, center.y); // Draw the text
-              }
-            });
-          }
+        Object.keys(apiData.message).forEach(color => {
+          apiData.message[color].forEach(group => {
+            if (group.area_name === "Inner Area") {
+              let center = calculateCenter(group.area_cells);
+              ctx.font = '1px Arial';
+              ctx.fillStyle = 'black';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(group.parent, center.x, center.y);
+            }
+          });
         });
       }
 
@@ -473,7 +470,7 @@
         })
         .then(data => {
           apiData = data; // Store the API data
-          console.log(apiData);
+          // console.log(apiData);
           updateCellMapWithApiData(data);
           drawGrid();
         })
@@ -779,39 +776,43 @@
         const cellId = generateCellId(rowClicked, columnClicked);
 
         let foundAreaData = null;
+        let leadIds = new Set(); // Use a Set to collect unique lead IDs
 
-        // Iterate through the nested structure of apiData
-        if (apiData && apiData.message) {
-          apiData.message.forEach(data => {
-            if (data.cell_groups) {
-              data.cell_groups.forEach(group => {
-                let cellIds = group.area_cells.match(/\d+/g); // Match only the numeric part
-
-                if (cellIds && cellIds.includes(cellId)) {
-                  foundAreaData = {
-                    "Area Name": group.area_name,
-                    "Area Type": data.block_type,
-                    "Building Name": data.building_name,
-                    "Floor Name": data.floor_name,
-                    "Status": group.color,
-                    "Cell ID": cellId
-                  };
-                }
-              });
+        // Updated logic to handle new API structure and collect all lead IDs
+        Object.keys(apiData.message).forEach(color => {
+          apiData.message[color].forEach(data => {
+            let cellIds = data.area_cells.match(/\d+/g);
+            if (cellIds && cellIds.includes(cellId)) {
+              if (!foundAreaData) {
+                foundAreaData = {
+                  "Area Name": data.parent,
+                  "Area Type": data.area_name,
+                  "Cell ID": cellId,
+                  "Block Type": data.block_type,
+                  "Customer Name": data.customer_name,
+                };
+              }
+              if (data.lead_name) {
+                leadIds.add(data.lead_name); // Add lead ID to the Set
+              }
             }
           });
-        }
+        });
 
         const cabinDetailsTextarea = document.getElementById('cabinDetails');
-
         if (foundAreaData) {
-          cabinDetailsTextarea.innerHTML = `<strong>Area Name:</strong> ${foundAreaData["Area Name"]}<br>
-                                 <strong>Area Type:</strong> ${foundAreaData["Area Type"]}<br>
-                                 <strong>Building Name:</strong> ${foundAreaData["Building Name"]}<br>
-                                 <strong>Floor Name:</strong> ${foundAreaData["Floor Name"]}<br>
-                                 <strong>Status:</strong> ${foundAreaData["Status"]}<br>
-                                 <strong>Cell ID:</strong> ${foundAreaData["Cell ID"]}`;
-        }else {
+          let leadIdString = Array.from(leadIds).join(', '); // Convert Set to a string
+          cabinDetailsTextarea.innerHTML = `
+        <strong>Area Name:</strong> ${foundAreaData["Area Name"]}<br>
+        <strong>Block Type:</strong> ${foundAreaData["Block Type"]}<br>
+        <strong>Customer Name:</strong> ${foundAreaData["Customer Name"]}<br>
+        <strong>Lead IDs:</strong> ${leadIdString}<br>
+        <br>
+        <strong><u>Other Info:</u></strong><br>
+        <strong>Area Type:</strong> ${foundAreaData["Area Type"]}<br>
+        <strong>Cell ID:</strong> ${foundAreaData["Cell ID"]}<br>
+        `;
+        } else {
           cabinDetailsTextarea.innerHTML = `No data found for Cell ID: ${cellId}`;
         }
       }

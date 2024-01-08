@@ -79,7 +79,7 @@ header {
     font-family: 'Archivo Black', sans-serif;
 } */
 
-.propertyDetails{
+.propertyDetails {
     font-weight: 900;
     font-family: 'Archivo Black', sans-serif;
 }
@@ -200,7 +200,7 @@ input:checked+.slider:before {
     padding-top: 20px;
 }
 
-.selectionInfo .dataContainer .dataTools{
+.selectionInfo .dataContainer .dataTools {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -210,12 +210,12 @@ input:checked+.slider:before {
 #copyWall,
 #clearWall,
 #copyInner,
-#clearInner{
+#clearInner {
     cursor: pointer;
 }
 
 #clearWall,
-#clearInner{
+#clearInner {
     display: none;
 }
 
@@ -237,12 +237,21 @@ textarea {
     font-size: 15px;
 }
 
-.cabinInfo .cabinDetails{
+.cabinInfo .cabinDetails {
     width: 100%;
     min-height: 95%;
     max-height: 95%;
     padding: 15px;
     font-size: 15px;
+}
+
+.cabinDetails table,
+.cabinDetails th,
+.cabinDetails td {
+    border: 1px solid var(--text-color);
+    border-collapse: collapse;
+    padding: 5px;
+    text-align: center;
 }
 
 #myCanvas {
@@ -260,7 +269,7 @@ textarea {
         height: auto;
     }
 
-    .cabinInfo textarea{
+    .cabinInfo textarea {
         height: 250px;
     }
 }
@@ -284,12 +293,12 @@ textarea {
     padding: 5px;
 }
 
-#settingsPane label{
+#settingsPane label {
     font-size: 10px;
 
 }
 
-#settingsPane input{
+#settingsPane input {
     width: 100%;
 }
 

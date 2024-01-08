@@ -766,7 +766,6 @@
           }
         }
       } else if (!isDevMode && fKeyPressed) {
-        // Preview Mode - Show Cabin Details
         const rect = canvas.getBoundingClientRect();
         const mousex = (event.clientX - rect.left - offsetX) / scale;
         const mousey = (event.clientY - rect.top - offsetY) / scale;
@@ -776,13 +775,14 @@
         const cellId = generateCellId(rowClicked, columnClicked);
 
         let foundAreaData = null;
-        let leadIds = new Set(); // Use a Set to collect unique lead IDs
+        let leadsTableRows = []; // Array to store rows for the leads table
 
-        // Updated logic to handle new API structure and collect all lead IDs
+        // Iterate over each color group
         Object.keys(apiData.message).forEach(color => {
           apiData.message[color].forEach(data => {
             let cellIds = data.area_cells.match(/\d+/g);
             if (cellIds && cellIds.includes(cellId)) {
+              groupFound = color;
               if (!foundAreaData) {
                 foundAreaData = {
                   "Area Name": data.parent,
@@ -790,10 +790,19 @@
                   "Cell ID": cellId,
                   "Block Type": data.block_type,
                   "Customer Name": data.customer_name,
+                  "Assigned BDM": data.assigned_to,
+                  "Lead ID": data.lead_name
                 };
               }
-              if (data.lead_name) {
-                leadIds.add(data.lead_name); // Add lead ID to the Set
+              if (color === 'orange' && data.lead_name) {
+                leadsTableRows.push(`
+              <tr>
+                <td>${data.lead_name}</td>
+                <td>${data.assigned_to}</td>
+                <td>${data.cabin_shown_date}</td>
+                <td>${data.blocking_date}</td>
+              </tr>
+            `);
               }
             }
           });
@@ -801,17 +810,56 @@
 
         const cabinDetailsTextarea = document.getElementById('cabinDetails');
         if (foundAreaData) {
-          let leadIdString = Array.from(leadIds).join(', '); // Convert Set to a string
-          cabinDetailsTextarea.innerHTML = `
-        <strong>Area Name:</strong> ${foundAreaData["Area Name"]}<br>
-        <strong>Block Type:</strong> ${foundAreaData["Block Type"]}<br>
-        <strong>Customer Name:</strong> ${foundAreaData["Customer Name"]}<br>
-        <strong>Lead IDs:</strong> ${leadIdString}<br>
-        <br>
-        <strong><u>Other Info:</u></strong><br>
-        <strong>Area Type:</strong> ${foundAreaData["Area Type"]}<br>
-        <strong>Cell ID:</strong> ${foundAreaData["Cell ID"]}<br>
+          // Display for orange group
+          if (groupFound === 'orange') {
+            let leadsTable = leadsTableRows.length ? `
+          <table style="border-collapse: collapse; width: 100%;">
+            <tr>
+              <th>Lead ID</th>
+              <th>Assigned BDM</th>
+              <th>Cabin Shown Date</th>
+              <th>Blocking Date</th>
+            </tr>
+            ${leadsTableRows.join('')}
+          </table>
+        ` : 'No leads found';
+
+            cabinDetailsTextarea.innerHTML = `
+          <strong>Cabin Shown to:</strong><br>
+          ${leadsTable}<br>
+          <strong><u>Other Info:</u></strong><br>
+          <strong>Area Name:</strong> ${foundAreaData["Area Name"]}<br>
+          <strong>Block Type:</strong> ${foundAreaData["Block Type"]}<br>
+          <strong>Area Type:</strong> ${foundAreaData["Area Type"]}<br>
+          <strong>Cell ID:</strong> ${foundAreaData["Cell ID"]}<br>
         `;
+          } else {
+            // Display for red, green, grey groups
+            let displayContent = `
+          <strong>Area Name:</strong> ${foundAreaData["Area Name"]}<br>
+          <strong>Block Type:</strong> ${foundAreaData["Block Type"]}<br>
+          <strong>Area Type:</strong> ${foundAreaData["Area Type"]}<br>
+          <strong>Cell ID:</strong> ${foundAreaData["Cell ID"]}<br>
+        `;
+
+            if (groupFound === 'red') {
+              displayContent = `
+            <strong>Lead ID:</strong> ${foundAreaData["Lead ID"]}<br>
+            <strong>Customer Name:</strong> ${foundAreaData["Customer Name"]}<br>
+            <strong>Assigned BDM:</strong> ${foundAreaData["Assigned BDM"]}<br>
+            <br>
+            <strong><u>Other Info:</u></strong><br>
+            ${displayContent}
+          `;
+            } else if (groupFound === 'green' || groupFound === 'grey') {
+              displayContent = `
+            <strong><u>Other Info:</u></strong><br>
+            ${displayContent}
+          `;
+            }
+
+            cabinDetailsTextarea.innerHTML = displayContent;
+          }
         } else {
           cabinDetailsTextarea.innerHTML = `No data found for Cell ID: ${cellId}`;
         }

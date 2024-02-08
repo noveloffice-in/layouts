@@ -509,7 +509,7 @@
     }
 
     function fetchLayoutData() {
-      fetch(`https://erpnoveloffice.in/api/method/get-layouts-test?location=${selectedLocation}&floor=${selectedFloor}&cb=${cacheBuster}`)
+      fetch(`https://erpnoveloffice.in/api/method/get-layouts?location=${selectedLocation}&floor=${selectedFloor}&cb=${cacheBuster}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');

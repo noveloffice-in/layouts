@@ -36,6 +36,7 @@
 
   <!-- Main Container -->
   <div id="pageContainer">
+
     <div class="row1">
       <!-- Canvas Container -->
       <div class="canvasContainer">
@@ -46,6 +47,39 @@
       <div class="cellInfo">
         <!-- Development Mode Section -->
         <div class="selectionInfo">
+
+
+          <!-- dropdown -->
+          <div class="Dropdown">
+            <div class="Cabins">
+              <label for="cabinType">Cabin Type</label>
+              <span><input type="radio" name="cabinType" value="occupied"
+                  onclick="changeDropdownOptions('occupiedcabin')"> Occupied </span>
+              <span><input type="radio" name="cabinType" value="unoccupied"
+                  onclick="changeDropdownOptions('unoccupiedcabin')"> Unoccupied </span>
+              <span><input type="radio" name="cabinType" value="passage" onclick="changeDropdownOptions('passage')">
+                Passage </span>
+                <span><input type="radio" name="cabinType" value="temporary" onclick="changeDropdownOptions('temporary')">
+                  temporary </span>
+            </div>
+
+            
+            <select class="selectcabin hidden" id="occupiedcabin">
+              <option value="" selected disabled hidden>Choose a occupied cabin</option>
+            </select>
+
+            <select class="selectcabin hidden" id="unoccupiedcabin">
+              <option value="" selected disabled hidden>Choose a unoccupied cabin</option>
+            </select>
+
+            <select class="selectcabin hidden" id="passage">
+              <option value="" selected disabled hidden>Choose a passage</option>
+            </select>
+
+            <select class="selectcabin hidden" id="temporary">
+              <option value="" selected disabled hidden>Choose a passage</option>
+            </select>
+          </div>
 
           <h3>Selection Details:</h3>
           <div class="dataContainer">
@@ -82,7 +116,7 @@
                 </svg>
               </span>
             </div>
-            <textarea class="selectionDetails" id="wallCells" readonly></textarea>
+            <textarea class="selectionDetails" id="wallCells"></textarea>
 
             <!-- Inner Cells Selection -->
             <div class="dataTools">
@@ -117,7 +151,7 @@
                 </svg>
               </span>
             </div>
-            <textarea class="selectionDetails" id="innerCells" readonly></textarea>
+            <textarea class="selectionDetails" id="innerCells"></textarea>
           </div>
         </div>
 
@@ -180,7 +214,6 @@
     bgImage.onload = drawGrid;
     const cacheBuster = new Date().getTime();
     bgImage.src = `./assets/images/${selectedLocation}-${selectedFloor}.png?cb=${cacheBuster}`;
-
     let brushSize = 1; // Default brush size
 
 
@@ -221,6 +254,7 @@
         cell.white = false;
         cell.green = false;
         cell.red = false;
+        cell.purple = false;
         cell.orange = false;
         delete cell.areaName;
       });
@@ -340,7 +374,8 @@
             white: '#FFFFFF',
             green: '#008000',
             red: '#FF0000',
-            orange: '#FFA500'
+            orange: '#FFA500',
+            purple: '#A020F0'
           };
 
           let filled = false;
@@ -458,10 +493,23 @@
 
     function updateSelectedCellsFromTextarea(inputText, group) {
       // Function logic
+      const selectedCellIds = inputText.split(',').map(cellId => cellId.trim());
+
+      for (const [cellId, cell] of cellMap.entries()) {
+        cell.selectedFor[group] = selectedCellIds.includes(`"${cellId}"`);
+        if (cell.selectedFor[group]) {
+          applyColorToSelectedCell(cell, group);
+        } else {
+          removeColorFromDeselectedCell(cell, group);
+        }
+      }
+
+      updateSelectionDetails(group); // Update the textarea
+      drawGrid(); // Redraw the grid
     }
 
     function fetchLayoutData() {
-      fetch(`https://erpnoveloffice.in/api/method/get-layouts?location=${selectedLocation}&floor=${selectedFloor}&cb=${cacheBuster}`)
+      fetch(`https://erpnoveloffice.in/api/method/get-layouts-test?location=${selectedLocation}&floor=${selectedFloor}&cb=${cacheBuster}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -470,8 +518,9 @@
         })
         .then(data => {
           apiData = data; // Store the API data
-          // console.log(apiData);
+          console.log(apiData);
           updateCellMapWithApiData(data);
+          populateDropdown(data);
           drawGrid();
         })
         .catch(error => {
@@ -553,7 +602,7 @@
       // Define color mapping for each group
       const colorMap = {
         'Wall': 'black', // or any other color you want for Wall cells
-        'Inner': 'grey'  // or any other color you want for Inner cells
+        'Inner': 'purple'  // or any other color you want for Inner cells
       };
 
       const color = colorMap[activeGroup];
@@ -566,7 +615,7 @@
       // Define color mapping for each group
       const colorMap = {
         'Wall': 'black', // or any other color you want for Wall cells
-        'Inner': 'grey'  // or any other color you want for Inner cells
+        'Inner': 'purple'  // or any other color you want for Inner cells
       };
 
       const color = colorMap[activeGroup];
@@ -633,7 +682,7 @@
 
       settingsPane.style.right = isDevMode ? '5px' : '-70px';
 
-      if (isDevMode) {
+      if (false) {
         // Clear selections in Dev Mode
         cellMap.forEach(cell => {
           cell.selected = false;
@@ -906,6 +955,175 @@
 
     // Initial Drawing of Grid
     drawGrid();
+
+
+    // -----drop down datafetch---------//
+    const parentDropdown = document.getElementById('occupiedcabin');
+    const unoccupiedDropdown = document.getElementById('unoccupiedcabin');
+    const passageDropdown = document.getElementById('passage');
+    const temporaryDropdown = document.getElementById('temporary');
+
+
+    function populateDropdown(layoutData) {
+      if (layoutData) {
+        layoutData.message.red.forEach((element) => {
+            if (!optionExists(parentDropdown, element.parent)) {
+          const option = document.createElement('option');
+          option.value = element.parent;
+          option.text = element.parent;
+          parentDropdown.appendChild(option);
+            }
+        });
+      }
+
+      if (layoutData) {
+        layoutData.message.green.forEach((element) => {
+            if (!optionExists(unoccupiedDropdown, element.parent)) {
+          const option = document.createElement('option');
+          option.value = element.parent;
+          option.text = element.parent;
+          unoccupiedDropdown.appendChild(option);
+            }
+        });
+      }
+
+      if (layoutData) {
+        layoutData.message.grey.forEach((element) => {
+            if (!optionExists(passageDropdown, element.parent)) {
+          const option = document.createElement('option');
+          option.value = element.parent;
+          option.text = element.parent;
+          passage.appendChild(option);
+            }
+        });
+      }
+
+      if (layoutData) {
+        layoutData.message.orange.forEach((element) => {
+            if (!optionExists(temporaryDropdown, element.parent)) {
+          const option = document.createElement('option');
+          option.value = element.parent;
+          option.text = element.parent;
+          temporary.appendChild(option);
+            }
+          });
+        }
+    }
+
+    function optionExists(dropdown, value) {
+  return Array.from(dropdown.options).some(option => option.value === value);
+}
+
+    // Add an event listener for the change event on the parentDropdown
+    parentDropdown.addEventListener('change', async () => {
+      const selectedCabin = parentDropdown.value;
+      handleParentDropdownChange(selectedCabin);
+    });
+
+    // Add an event listener for the change event on the unoccupiedDropdown
+    unoccupiedDropdown.addEventListener('change', async () => {
+      const selectedCabin = unoccupiedDropdown.value;
+      handleUnoccupiedDropdownChange(selectedCabin);
+    });
+    // Add an event listener for the change event on the passageDropdown
+    passageDropdown.addEventListener('change', async () => {
+      const selectedCabin = passageDropdown.value;
+      handlePassageDropdownChange(selectedCabin);
+    });
+    // Add an event listener for the change event on the temporaryDropdown
+    temporaryDropdown.addEventListener('change', async () => {
+      const selectedCabin = temporaryDropdown.value;
+      handleTemporaryDropdownChange(selectedCabin);
+    });
+    // -------------------------------------occupied-----------------------------------//
+
+    function handleParentDropdownChange(selectedCabin) {
+      let filteredData = apiData.message.red.filter((element) => {
+        return element.parent == selectedCabin;
+      });
+
+      filteredData.forEach((filteredElement) => {
+        if (filteredElement.area_name == 'Border') {
+          document.getElementById('wallCells').value = filteredElement.area_cells;
+        }
+        if (filteredElement.area_name == 'Inner Area') {
+          document.getElementById('innerCells').value = filteredElement.area_cells;
+        }
+      });
+
+      console.log("filteredData = ", filteredData);
+    }
+    // -------------------------------------Unoccupied-----------------------------------//
+
+    function handleUnoccupiedDropdownChange(selectedCabin) {
+      let filteredData1 = apiData.message.green.filter((element) => {
+        return element.parent == selectedCabin;
+      });
+
+      filteredData1.forEach((filteredElement) => {
+        if (filteredElement.area_name == 'Border') {
+          document.getElementById('wallCells').value = filteredElement.area_cells;
+        }
+        if (filteredElement.area_name == 'Inner Area') {
+          document.getElementById('innerCells').value = filteredElement.area_cells;
+        }
+      });
+
+      console.log("filteredData1 = ", filteredData1);
+    }
+
+    // -------------------------------------passage-----------------------------------//
+
+    function handlePassageDropdownChange(selectedCabin) {
+      let filteredData2 = apiData.message.grey.filter((element) => {
+        return element.parent == selectedCabin;
+      });
+
+      filteredData2.forEach((filteredElement) => {
+        if (filteredElement.area_name == 'Border') {
+          document.getElementById('wallCells').value = filteredElement.area_cells;
+        }
+        if (filteredElement.area_name == 'Inner Area') {
+          document.getElementById('innerCells').value = filteredElement.area_cells;
+        }
+      });
+
+      console.log("filteredData2 = ", filteredData2);
+    }
+
+    // -------------------------------------temporary-----------------------------------//
+
+    function handleTemporaryDropdownChange(selectedCabin) {
+      let filteredData3 = apiData.message.orange.filter((element) => {
+        return element.parent == selectedCabin;
+      });
+
+      filteredData3.forEach((filteredElement) => {
+        if (filteredElement.area_name == 'Border') {
+          document.getElementById('wallCells').value = filteredElement.area_cells;
+        }
+        if (filteredElement.area_name == 'Inner Area') {
+          document.getElementById('innerCells').value = filteredElement.area_cells;
+        }
+      });
+
+      console.log("filteredData3 = ", filteredData3);
+    }
+
+    // -----------------------------------starts here function for changeDropdown based on radio button---------------------------------//
+
+    function changeDropdownOptions(dropdownId) {
+      // Hide all dropdowns
+      document.querySelectorAll('.selectcabin').forEach(dropdown => {
+        dropdown.classList.add('hidden');
+      });
+
+      // Show the selected dropdown
+      document.getElementById(dropdownId).classList.remove('hidden');
+    }
+
+    // -----------------------------------ends here of function for changeDropdown based on radio button---------------------------------//
+
   </script>
 
 </body>

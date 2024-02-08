@@ -190,6 +190,27 @@ input:checked+.slider:before {
     display: none;
     height: 100%;
 }
+/* for dropdown */
+.Dropdown {
+    text-align: left;
+    margin-bottom: 10px;
+    ;
+}
+
+.Cabins {
+    display: inline-block;
+    text-align: left;
+}
+
+.selectcabin {
+    margin-top: 10px;
+    margin-left: 140px;
+}
+
+.hidden {
+    display: none;
+}
+/* ends here dropdown */
 
 .cabinInfo {
     height: 100%;
